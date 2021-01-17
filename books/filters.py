@@ -10,7 +10,7 @@ from taggit.models import Tag
 class BookFilter(django_filters.FilterSet):
     title = django_filters.CharFilter(label='', lookup_expr='icontains', widget=TextInput(attrs={'placeholder': 'Title contains...'}))
     short_description = django_filters.CharFilter(label='', lookup_expr='icontains', widget=TextInput(attrs={'placeholder': 'Book description contains...'}))
-    tags = django_filters.Filter(label='', widget=LinkWidget)
+    tags = django_filters.Filter(label='', widget=LinkWidget)  # just here to block widget
 
     class Meta:
         model = Book
