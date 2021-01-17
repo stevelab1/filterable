@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if author %}
+    {{ author.full_name }} titles
+  {% else %}
+    All titles
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row gx-0">
+        <div class="col">
+        <nav style="--bs-breadcrumb-divider: '';" aria-label="breadcrumb">
+                <a href="/" class="btn btn-sm bg-outline-secondary p-1 px-3 my-2 mb-0 rounded-pill border border-1 breadcrumb-item active"><svg width="1em" height="1em" viewBox="0 1.4 16 18" class="bi bi-house-door-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.5 10.995V14.5a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .146-.354l6-6a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 .146.354v7a.5.5 0 0 1-.5.5h-4a.5.5 0 0 1-.5-.5V11c0-.25-.25-.5-.5-.5H7c-.25 0-.5.25-.5.495z"/>
+        <path fill-rule="evenodd" d="M13 2.5V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>
+        </svg></a>
+                <button class="btn btn-sm p-1 px-3 my-2 mb-0 bg rounded-pill border border-1 breadcrumb-item active" aria-current="page"><small>{{ filter.qs.count }} book{{ filter.qs.count|pluralize }} of 6</small></button>
+            <a href="{% url "book_list" %}" class="btn btn-sm btn-outline-dark p-1 px-3 my-2 mb-0 bg rounded-pill border border-1"><small>All</small></a>
+            <!--    create filtering buttons by genre or such, wherever you want-->
+            {% for genre in genres %} <a href="/?genres={{ genre.id }}" class="btn btn-sm btn-outline-dark p-1 px-3 my-2 mb-0 bg rounded-pill border border-1"><small>{{ genre }}</small></a> {% endfor %}
+            <!--    if you add subgenres field to your genre model, will be able to surface subgenres of genre when someone calls genre, or right now can do manually. Can bring up specific content, variables, and functions -->
+            {% if "genres=2" in request.get_full_path %} <a href="/?sub=3" class="btn btn-sm btn-outline-dark p-1 px-3 my-2 mb-0 bg rounded-pill border border-1"><small>Subgenre</small></a> {% endif %}
+            <!--    for using tags and categorising eg as settings:tag, character:tag, then presenting sliced-->
+            {% for genre in genres %} {% if "D" in genre.title %} <a href="/?genres={{ genre.id }}" class="btn btn-sm btn-outline-dark  p-1 px-3 my-2 mb-0 bg rounded-pill border border-1"><small>{{ genre.title|slice:":2" }}</small></a> {% endif %} {% endfor %}
+        </nav>
+        </div>
+    </div>
+</div>
+<div class="row gx-0">
+        <div class="col-lg-4 col-xl-3 col-xxl-2 px-2">
+            <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="container-fluid">
+                    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <form method="get" class="custom-form-or-card border border-1 p-4 my-2 rounded-3" style="background:#f8f9fa; background-image: var(--bs-gradient); width:100%;">
+                                {{ filter.form.as_p }}
+                                <input type="submit" value="Filter   ⮐"/>
+                                <br><br><br>
+                            </form>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="col-md-12 col-lg-8 col-xl-6 col-xxl-8 px-2 mt-0">
+            <p class="">
+            <div class="row gx-3">
+            {% if "genres=1" in request.get_full_path %}
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
+                <a href="/genre/romance/"><div class="card mb-3 rounded" style="width: 100%; height: 200px; min-width: 269px; max-width: 600px;">THE ROMANCE SHELF</div></a>
+            </div>
+            {% endif %}
+            {% if "genres=3" in request.get_full_path %}
+             <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
+                <a href="/genre/sci-fi/"><div class="card mb-3 rounded" style="width: 100%; height: 200px; min-width: 269px; max-width: 600px; height: 200px;">THE SCI-FI SHELF</div></a>
+            </div>
+            {% endif %}
+            {% if "genres=5" in request.get_full_path %}
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
+                <a href="/genre/fantasy/"><div class="card mb-3 rounded" style="width: 100%; height: 200px; min-width: 269px; max-width: 600px; height: 200px;">THE FANTASY SHELF</div></a>
+            </div>
+            {% endif %}
+            {% if "genres=6" in request.get_full_path %}
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
+                <a href="/genre/drama/"><div class="card mb-3 rounded" style="width: 100%; height: 200px; min-width: 269px; max-width: 400;">THE DRAMA SHELF</div></a>
+            </div>
+            {% endif %}
+            {% for book in filter.qs %}
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 col-xxl-4">
+                <div class="row g-0">
+                    <div class="card mb-3 rounded" style="width: 100%; max-width: 600px;; min-width: 269px; height: 200px;">
+                        <div class="row g-0">
+                            <div class="col">
+                                <img src="/media/images/6dedf44d3ea322809634744be06e4447--abandoned-castles-abandone.jpg" class="" style="min-height: 199px;" alt="...">
+                            </div>
+                            <div class="col">
+                                <div class="card-body py-0 mx-0 px-1">
+                                    <h2 class="card-title">{{ book.title }} </h2>
+                                    <h5 class="card-title">by {{ book.author }} </h5>
+                                    <p class="card-text"><small>{% for genre in book.genres.all %} <a href="/?genres={{ genre.id }}">({{ genre }})</a> {% endfor %} / {% for subgenre in book.subgenres.all %} <a href="/?subgenres={{ subgenre.id }}">({{ subgenre }})</a> {% endfor %}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+  {{ filter.qs.count }} book result{{ filter.qs.count|pluralize }} for that filter. Try removing a filter, or <a href="{% url "book_list" %}" class="alert-link">click here</a>.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+            </p>
+        </div>
+        </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-2 px-2 py-3">
+        <div class="custom-form-or-card rounded px-2 py-2" style="background:#f8f9fa; background-image: var(--bs-gradient); width:100%;">
+            <p>Sidebar</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
