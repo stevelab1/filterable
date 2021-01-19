@@ -17,7 +17,8 @@ db.sqlite3-journal
 django.css
 venv
 
-#pycharm
+openlibrarytest.html
+
 .idea/
 
 #heroku

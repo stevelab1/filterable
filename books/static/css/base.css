@@ -123,10 +123,6 @@ ul.content-types li {
     display:none;
 }
 
-form p {
-    overflow:auto;
-}
-
 form:hover {
  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.19);
 }
@@ -137,21 +133,49 @@ form:hover {
 }
 
 label {
-    float:left;
-    clear:both;
-    margin:0 0 8px 0;
+    border: 1px solid #ccc;
+    border-radius:7px;
+    padding: 3px 6px;
+    float: right;
 }
 
-input, select, textarea {
-    border:1px solid #ccc;
-    border-radius:7px;
-    padding:8px 12px;
-    margin:3px 3px;
+/* FORM DEFAULTS */
+
+input, textarea, select, .form-row p, form .button {
+    margin: 2px 0;
+    padding: 2px 3px;
+    vertical-align: middle;
     font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
     font-weight: normal;
     font-size: 13px;
-    float:left;
-    clear:both;
+}
+
+
+textarea {
+    vertical-align: top;
+}
+
+input[type=text], input[type=password], input[type=email], input[type=url],
+input[type=number], input[type=tel], textarea, select, .vTextField {
+    border: 1px solid #ccc;
+    border-radius:2px;
+    padding: 5px 6px;
+    margin-top: 0;
+
+}
+
+select {
+    height: 30px;
+}
+
+select[multiple] {
+    /* Allow HTML size attribute to override the height in the rule above. */
+    height: auto;
+    overflow: auto;
+}
+
+select[multiple]:hover {
+    min-height: 350px;
 }
 
 input[type=text] {
@@ -168,7 +192,7 @@ select {
 }
 
 input[type=submit], a.button {
-    border-radius:7px;
+    border-radius:3px;
     background:#ffffff;
     color:green;
     text-transform:uppercase;
